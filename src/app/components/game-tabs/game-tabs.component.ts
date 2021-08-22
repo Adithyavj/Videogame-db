@@ -11,10 +11,7 @@ export class GameTabsComponent implements OnInit {
   @Input() game: Game;
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.game.trailers);
-    console.log(this.game.screenshots);
-    
+  ngOnInit(): void { 
     
   }
 
