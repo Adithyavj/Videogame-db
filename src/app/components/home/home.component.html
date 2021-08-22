@@ -18,7 +18,7 @@
 </div>
 <div class="games">
     <ng-container *ngFor="let game of games">
-        <div class="game">
+        <div class="game" (click)="openGameDetails(game.id)">
             <div class="game-thumb-container">
                 <img 
                     *ngIf="game.background_image"

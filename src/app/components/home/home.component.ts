@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { APIResponse } from 'src/app/_models/apiResponse';
 import { Game } from 'src/app/_models/game';
 import { HttpService } from 'src/app/_services/http.service';
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   public sort: string;
   public games: Array<Game> = new Array<Game>();
 
-  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute) { }
+  constructor(private httpService: HttpService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     // when the home page loads, we want to check if there are any params.
@@ -36,4 +36,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  openGameDetails(id: string) {
+    this.router.navigate(['details', id]);
+  }
 }
