@@ -1,17 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Game } from 'src/app/_models/game';
+import { HttpService } from 'src/app/_services/http.service';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
   gameRating = 0;
+  gameId: string; // id we will be getting from route
+  game: Game;
+  private routeSub: Subscription;
+  private gameSub: Subscription;
 
-  constructor() { }
+  constructor(private activatedRoute: ActivatedRoute, private httpService: HttpService) { }
 
   ngOnInit(): void {
+    // to get the route params
+    this.routeSub = this.activatedRoute.params.subscribe((params: Params) => {
+      this.gameId = params['id'];
+      this.getGameDetails(this.gameId);
+    });
   }
 
   // to show color in rating gauge
@@ -27,6 +40,27 @@ export class DetailsComponent implements OnInit {
     }
     else {
       return '#ef4655'
+    }
+  }
+
+  getGameDetails(id: string): void {
+    this.gameSub = this.httpService.getGameDetails(id).subscribe((gameResp: Game) => {
+      this.game = gameResp;
+
+      // giving some time to display the gauge with critic 
+      setTimeout(() => {
+        this.gameRating = this.game.metacritic;
+      }, 1000);
+      console.log(this.game);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.gameSub) {
+      this.gameSub.unsubscribe();
+    }
+    if (this.routeSub) {
+      this.routeSub.unsubscribe();
     }
   }
 
