@@ -1,38 +1,51 @@
 <div class="game-tabs">
     <mat-tab-group mat-align-tabs="start" backgroundColor="primary">
         <mat-tab label="About">
-            <p class="game-tabs-par">
-                Platforms: <span>PC</span>
+            <p *ngIf="game.parent_platforms?.length" class="game-tabs-par">
+                Platforms: 
+                <span *ngFor="let game of game.parent_platforms; let last=last;">
+                    {{game.platform.name}} <span *ngIf="!last">, </span>
+                </span>
             </p>
-            <p class="game-tabs-par">
-                Publishers: <span>Konami</span>
+            <p *ngIf="game.publishers?.length"
+                class="game-tabs-par">
+                Publishers: 
+                <span *ngFor="let publisher of game.publishers let last = last;">
+                    {{publisher.name}} <span *ngIf="!last">, </span>
+                </span>
             </p>
-            <p class="game-tabs-par">
-                Website: <a class="game-tabs-link" href="" target="_blank">http://</a>
+            <p 
+                *ngIf="game.website"
+                class="game-tabs-par">
+                Website: <a class="game-tabs-link" href="{{game.website}}" target="_blank">{{game.website}}</a>
             </p>
-            <div class="game-description">Some Description</div>
+            <div class="game-description" [innerHtml]="game.description"></div>
             <p class="game-tabs-votes">
-                <span>
-                    <mat-icon class="game-vote-up">thumb_up</mat-icon>
-                    <span class="game-votes-count">55</span>
-                </span>
-                <span>
-                    <mat-icon class="game-vote-down">thumb_down</mat-icon>
-                    <span class="game-votes-count">55</span>
-                </span>
+                <ng-container *ngFor="let rating of game.ratings">
+                    <span *ngIf="rating.title==='exceptional'">
+                        <mat-icon class="game-votes-up">thumb_up</mat-icon>
+                        <span class="game-votes-count">{{rating.count || 0}}</span>
+                    </span>
+                    <span *ngIf="rating.title==='skip'">
+                        <mat-icon class="game-votes-down">thumb_down</mat-icon>
+                        <span class="game-votes-count">{{rating.count || 0}}</span>
+                    </span>
+                </ng-container>
             </p>
         </mat-tab>
-        <mat-tab label="Screenshots">
+        <mat-tab label="Screenshots" *ngIf="game.screenshots?.length">
             <img 
+                *ngFor="let screenshot of game.screenshots"
                 class="game-screenshot"
-                src="" 
+                src="{{screenshot.image}}" 
                 alt="screenshot">
         </mat-tab>
-        <mat-tab label="Trailer">
+        <mat-tab label="Trailer" *ngIf="game.trailers?.length">
             <video 
+                *ngFor="let trailer of game.trailers"
                 class="game-trailer"
                 controls>
-                <source src="" type="video/mp4"> Your browser doesn't support video tag.
+                <source src="{{trailer.data?.max}}" type="video/mp4"> Your browser doesn't support video tag.
             </video>
         </mat-tab>
     </mat-tab-group>
