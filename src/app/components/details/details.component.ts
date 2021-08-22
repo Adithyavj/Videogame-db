@@ -46,12 +46,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getGameDetails(id: string): void {
     this.gameSub = this.httpService.getGameDetails(id).subscribe((gameResp: Game) => {
       this.game = gameResp;
-
+      console.log(this.game);
+      
       // giving some time to display the gauge with critic 
       setTimeout(() => {
         this.gameRating = this.game.metacritic;
       }, 1000);
-      console.log(this.game);
     });
   }
 
