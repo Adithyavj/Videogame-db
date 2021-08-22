@@ -15,21 +15,26 @@
     </mat-form-field>
 </div>
 <div class="games">
-    <div class="game">
-        <div class="game-thumb-container">
-            <img 
-                src="https://i.gadgets360cdn.com/large/FAU-G_Google_play_1606736732649.jpg" 
-                alt="thumbnail" 
-                class="game-thumbnail">
-        </div>
-        <div class="game-description">
-            <p class="game-name">Name</p>
-            <div class="game-platforms">
+    <ng-container *ngFor="let game of games">
+        <div class="game">
+            <div class="game-thumb-container">
                 <img 
-                    src="https://www.bgsbuniversity.org/wp-content/uploads/2020/09/FAUG-Game-Download.jpg" 
-                    alt="slug" 
-                    class="game-platform">
+                    *ngIf="game.background_image"
+                    src="{{game.background_image}}" 
+                    alt="{{game.name}}" 
+                    class="game-thumbnail">
+                <p *ngIf="!game.background_image">No image</p>
+            </div>
+            <div class="game-description">
+                <p class="game-name">{{game.name}}</p>
+                <div class="game-platforms">
+                    <img 
+                    *ngFor="let gamePlatform of game.parent_platforms"
+                        src="assets/images/platforms/{{gamePlatform.platform.slug}}.svg" 
+                        alt="slug" 
+                        class="game-platform">
+                </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>
