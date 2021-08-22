@@ -14,6 +14,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   gameRating = 0;
   gameId: string; // id we will be getting from route
   game: Game;
+  isDataAvailable: boolean = false;
   private routeSub: Subscription;
   private gameSub: Subscription;
 
@@ -22,8 +23,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // to get the route params
     this.routeSub = this.activatedRoute.params.subscribe((params: Params) => {
-      this.gameId = params['id'];
-      this.getGameDetails(this.gameId);
+      if (params['id']) {
+        this.gameId = params['id'];
+        this.getGameDetails(this.gameId);
+      }
     });
   }
 
@@ -46,8 +49,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   getGameDetails(id: string): void {
     this.gameSub = this.httpService.getGameDetails(id).subscribe((gameResp: Game) => {
       this.game = gameResp;
-      console.log(this.game);
-      
+      this.isDataAvailable = true;
       // giving some time to display the gauge with critic 
       setTimeout(() => {
         this.gameRating = this.game.metacritic;
