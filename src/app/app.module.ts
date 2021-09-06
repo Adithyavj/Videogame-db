@@ -19,6 +19,7 @@ import { GameTabsComponent } from './components/game-tabs/game-tabs.component';
 
 import { HttpHeadersInterceptor } from './_interceptors/http-headers.interceptor';
 import { HttpErrorsInterceptor } from './_interceptors/http-errors.interceptor';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { HttpErrorsInterceptor } from './_interceptors/http-errors.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpHeadersInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorsInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorsInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
